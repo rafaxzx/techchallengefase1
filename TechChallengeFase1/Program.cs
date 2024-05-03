@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using TechChallengeFase1.Entities;
 using TechChallengeFase1.Interfaces;
 using TechChallengeFase1.Repository;
+using TechChallengeFase1.Services;
 
 namespace TechChallengeFase1
 {
@@ -29,6 +30,7 @@ namespace TechChallengeFase1
             //Add depedencies injection
             builder.Services.AddScoped<IRepository<Contact>, ContactRepository>();
             builder.Services.AddScoped<IRepository<DDD>, DDDRepository>();
+            builder.Services.AddScoped<IService<DDD>, DDDService>();
 
             var app = builder.Build();
 

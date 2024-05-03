@@ -53,8 +53,9 @@ namespace TechChallengeFase1.Repository
                 // Através de uma função criamos uma propriedade e definimos mais informações sobre ela com métodos
                 etb.Property(ddd => ddd.Id)
                 .HasColumnType("INTEGER")
-                .ValueGeneratedNever(). // Desabilita por parte do EFCore a geração de Id automaticamente
-                UseIdentityColumn(); // Passa a responsabilidade de criação do Id para o Postgres
+                .ValueGeneratedNever() // Desabilita por parte do EFCore a geração de Id automaticamente
+                .ValueGeneratedOnAdd()
+                .UseIdentityColumn(); // Passa a responsabilidade de criação do Id para o Postgres
 
                 // Agora iremos criar nosso número para representar nosso DDD de fato
                 etb.Property(ddd => ddd.Number)
@@ -73,6 +74,7 @@ namespace TechChallengeFase1.Repository
                 etb.Property(contact => contact.Id) // Propriedade id
                 .HasColumnType("INTEGER")
                 .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .UseIdentityColumn();
 
                 etb.Property(contact => contact.Name)

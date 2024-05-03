@@ -10,17 +10,17 @@ namespace TechChallengeFase1.Controllers
     [ApiController]
     public class DDDController : ControllerBase
     {
-        private readonly IRepository<DDD> _dddRepository;
+        private readonly IService<DDD> _service;
 
-        public DDDController(IRepository<DDD> dddRepository)
+        public DDDController(IService<DDD> service)
         {
-            _dddRepository = dddRepository;
+            _service = service;
         }
         // GET: api/<DDDController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult Get()
         {
-            return new string[] { "11", "12", "13" };
+            return Ok(_service.GetAll());
         }
 
         // GET api/<DDDController>/5
@@ -32,8 +32,10 @@ namespace TechChallengeFase1.Controllers
 
         // POST api/<DDDController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] DDD ddd)
         {
+            _service.Create(ddd);
+            return Ok();
         }
 
         // PUT api/<DDDController>/5
@@ -46,6 +48,7 @@ namespace TechChallengeFase1.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            _service.Delete(id);
         }
     }
 }

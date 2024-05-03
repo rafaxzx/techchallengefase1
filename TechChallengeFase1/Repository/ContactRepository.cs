@@ -5,14 +5,15 @@ namespace TechChallengeFase1.Repository
 {
     public class ContactRepository : IRepository<Contact>
     {
-        public IList<Contact> ListEntities { get ; set ; }
+        private readonly ApplicationDbContext _context;
 
-        public ContactRepository()
+        public ContactRepository(ApplicationDbContext context)
         {
-            this.ListEntities = new List<Contact>();
+            ArgumentNullException.ThrowIfNull(nameof(context));
+            _context = context;
         }
 
-        public Contact CreateEntity(Contact entidade)
+        public void CreateEntity(Contact entidade)
         {
             throw new NotImplementedException();
         }
@@ -27,7 +28,7 @@ namespace TechChallengeFase1.Repository
             throw new NotImplementedException();
         }
 
-        public void UpdateEntity(Contact entidade)
+        public void UpdateEntity(int id, Contact entidade)
         {
             throw new NotImplementedException();
         }

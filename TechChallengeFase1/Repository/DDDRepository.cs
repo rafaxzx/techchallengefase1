@@ -1,35 +1,45 @@
-﻿using TechChallengeFase1.Entities;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using TechChallengeFase1.Entities;
 using TechChallengeFase1.Interfaces;
 
 namespace TechChallengeFase1.Repository
 {
     public class DDDRepository : IRepository<DDD>
     {
-        public IList<DDD> ListEntities { get ; set ; }
+        private readonly ApplicationDbContext _context;
 
-        public DDDRepository()
+        public DDDRepository(ApplicationDbContext context)
         {
-            this.ListEntities = new List<DDD>();
+            ArgumentNullException.ThrowIfNull(nameof(context));
+            _context = context;
         }
 
-        public DDD CreateEntity(DDD entidade)
+        public void CreateEntity(DDD ddd)
         {
-            throw new NotImplementedException();
+            _context.Add(ddd);
+            _context.SaveChanges();
         }
 
         public void DeleteEntity(int Id)
         {
-            throw new NotImplementedException();
+            _context.Remove(_context.DDD.Find(Id));
+            _context.SaveChanges();
         }
 
         public IEnumerable<DDD> ToListEntities()
         {
-            throw new NotImplementedException();
+            return _context.DDD.ToList();
         }
 
-        public void UpdateEntity(DDD entidade)
+        public void UpdateEntity(int id, DDD ddd)
         {
-            throw new NotImplementedException();
+            if(_context.Find<DDD>(ddd) != null)
+            {
+                _context.Update(ddd);
+                _context.SaveChanges();
+            }
         }
     }
 }

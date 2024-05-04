@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using TechChallengeFase1.Entities;
+﻿using TechChallengeFase1.Entities;
 using TechChallengeFase1.Interfaces;
 
 namespace TechChallengeFase1.Repository
@@ -35,11 +32,19 @@ namespace TechChallengeFase1.Repository
 
         public void UpdateEntity(int id, DDD ddd)
         {
-            if(_context.Find<DDD>(ddd) != null)
+            var dddToUpdate = _context.DDD.Find(id);
+            if (dddToUpdate != null)
             {
-                _context.Update(ddd);
+                dddToUpdate.Number = ddd.Number;
+                dddToUpdate.Regiao = ddd.Regiao;
+
+                _context.Update(dddToUpdate);
                 _context.SaveChanges();
             }
+        }
+        public DDD GetById(int id) {
+
+            return _context.DDD.Find(id);
         }
     }
 }

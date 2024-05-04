@@ -31,6 +31,7 @@ namespace TechChallengeFase1
             builder.Services.AddScoped<IRepository<Contact>, ContactRepository>();
             builder.Services.AddScoped<IRepository<DDD>, DDDRepository>();
             builder.Services.AddScoped<IService<DDD>, DDDService>();
+            builder.Services.AddScoped<IService<Contact>, ContactService>();
 
             var app = builder.Build();
 

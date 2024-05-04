@@ -13,24 +13,42 @@ namespace TechChallengeFase1.Repository
             _context = context;
         }
 
-        public void CreateEntity(Contact entidade)
+        public void CreateEntity(Contact contact)
         {
-            throw new NotImplementedException();
+            var idDDD = contact.DDDId;
+            contact.Ddd = _context.DDD.Find(idDDD);
+            _context.Add(contact);
+            _context.SaveChanges();
         }
 
         public void DeleteEntity(int Id)
         {
-            throw new NotImplementedException();
+            _context.Remove(_context.Contact.Find(Id));
+            _context.SaveChanges();
         }
 
         public IEnumerable<Contact> ToListEntities()
         {
-            throw new NotImplementedException();
+            return _context.Contact.ToList();
         }
 
-        public void UpdateEntity(int id, Contact entidade)
+        public void UpdateEntity(int id, Contact contact)
         {
-            throw new NotImplementedException();
+            var contactToUpdate = _context.Contact.Find(id);
+            if (contactToUpdate != null)
+            {
+                contactToUpdate.Name = contact.Name;
+                contactToUpdate.Email = contact.Email;
+                contactToUpdate.PhoneNumber = contact.PhoneNumber;
+                contactToUpdate.DDDId = contact.DDDId;
+
+                _context.Update(contactToUpdate);
+                _context.SaveChanges();
+            }
+        }
+        public Contact GetById(int id)
+        {
+            return _context.Contact.Find(id);
         }
     }
 }

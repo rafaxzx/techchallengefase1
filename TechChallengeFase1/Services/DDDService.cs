@@ -32,12 +32,12 @@ namespace TechChallengeFase1.Services
 
         public DDD GetById(int id)
         {
-            throw new NotImplementedException();
+            return _repository.GetById(id);
         }
 
         public void Update(int id, DDD ddd)
         {
-            throw new NotImplementedException();
+            _repository.UpdateEntity(id, ddd);
         }
     }
 }

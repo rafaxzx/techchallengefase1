@@ -13,5 +13,6 @@ namespace TechChallengeFase1.Interfaces
         public void UpdateEntity(int id, T entidade);
         //Delete
         public void DeleteEntity(int Id);
+        public T GetById(int Id);
     }
 }

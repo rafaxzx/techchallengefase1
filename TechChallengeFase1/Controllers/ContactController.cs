@@ -10,43 +10,47 @@ namespace TechChallengeFase1.Controllers
     [ApiController]
     public class ContactController : ControllerBase
     {
-        private readonly IRepository<Contact> _contactRepository;
+        private readonly IService<Contact> _service;
 
-        public ContactController(IRepository<Contact> contactRepository)
+        public ContactController(IService<Contact> contactService)
         {
-            _contactRepository = contactRepository;
+            _service = contactService;
         }
 
         // GET: api/<ContactController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IActionResult Get()
         {
-            return new string[] { "Contact1", "Contact2" };
+            return Ok(_service.GetAll());
         }
 
         // GET api/<ContactController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult Get(int id)
         {
-            return "value";
+            return Ok(_service.GetById(id));
         }
 
         // POST api/<ContactController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] Contact contact)
         {
+            _service.Create(contact);
+            return Ok();
         }
 
         // PUT api/<ContactController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(int id, [FromBody] Contact contact)
         {
+            _service.Update(id, contact);
         }
 
         // DELETE api/<ContactController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            _service.Delete(id);
         }
     }
 }

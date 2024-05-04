@@ -62,6 +62,8 @@ namespace TechChallengeFase1.Repository
                 .HasColumnType("INTEGER")
                 .IsRequired(); // Não permite que a coluna tenha valores nulos
 
+                
+
             });
 
             // Agora para nossa entidade Contato
@@ -95,8 +97,8 @@ namespace TechChallengeFase1.Repository
 
                 etb.HasOne(contact => contact.Ddd)
                 .WithMany(ddd => ddd.Contacts)
-                .HasForeignKey(ddd => ddd.Id);
-
+                .HasPrincipalKey(ddd => ddd.Id);
+                              
             });
         }
     }

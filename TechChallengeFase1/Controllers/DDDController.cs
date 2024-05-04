@@ -25,9 +25,9 @@ namespace TechChallengeFase1.Controllers
 
         // GET api/<DDDController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult Get(int id)
         {
-            return "value";
+            return Ok(_service.GetById(id));
         }
 
         // POST api/<DDDController>
@@ -40,8 +40,9 @@ namespace TechChallengeFase1.Controllers
 
         // PUT api/<DDDController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public void Put(int id, [FromBody] DDD ddd)
         {
+            _service.Update(id, ddd);
         }
 
         // DELETE api/<DDDController>/5

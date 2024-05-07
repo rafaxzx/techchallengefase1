@@ -42,7 +42,7 @@ namespace TechChallengeFase1.Repository
                 _context.SaveChanges();
             }
         }
-        public DDD GetById(int id) {
+        public DDD GetByIdEntity(int id) {
 
             return _context.DDD.Find(id);
         }

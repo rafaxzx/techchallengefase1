@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TechChallengeFase1.DTOs;
 using TechChallengeFase1.Entities;
 using TechChallengeFase1.Interfaces;
 
@@ -16,32 +17,37 @@ namespace TechChallengeFase1.Controllers
         {
             _service = service;
         }
+
         // GET: api/<DDDController>
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_service.GetAll());
+            var ddds = _service.GetAll();
+            return Ok(ddds);
         }
 
         // GET api/<DDDController>/5
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            return Ok(_service.GetById(id));
+            var dddById = _service.GetById(id);
+            return Ok(dddById);
         }
 
         // POST api/<DDDController>
         [HttpPost]
-        public IActionResult Post([FromBody] DDD ddd)
+        public IActionResult Post([FromBody] DDDdto dddInputed)
         {
+            DDD ddd = new DDD { Number = dddInputed.Number,Regiao=dddInputed.Regiao, Contacts = [] } ;
             _service.Create(ddd);
             return Ok();
         }
 
         // PUT api/<DDDController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] DDD ddd)
+        public void Put(int id, [FromBody] DDDdto dddInputed)
         {
+            DDD ddd = new DDD { Number = dddInputed.Number, Regiao = dddInputed.Regiao, Contacts = [] };
             _service.Update(id, ddd);
         }
 
@@ -50,6 +56,13 @@ namespace TechChallengeFase1.Controllers
         public void Delete(int id)
         {
             _service.Delete(id);
+        }
+
+        // GET api/<DDDController>/FindNumber/5
+        [HttpGet("/FindNumber/{number}")]
+        public IActionResult GetNumber(int number)
+        {
+            return Ok(_service.GetAll().Where(ddd => ddd.Number == number).SingleOrDefault() ?? null);
         }
     }
 }

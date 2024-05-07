@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TechChallengeFase1.DTOs;
 using TechChallengeFase1.Entities;
 using TechChallengeFase1.Interfaces;
 
@@ -33,16 +34,29 @@ namespace TechChallengeFase1.Controllers
 
         // POST api/<ContactController>
         [HttpPost]
-        public IActionResult Post([FromBody] Contact contact)
+        public IActionResult Post([FromBody] Contactdto contactInputed)
         {
+            Contact contact = new Contact{
+                Name = contactInputed.Name,
+                PhoneNumber = contactInputed.PhoneNumber,
+                Email = contactInputed.Email,
+                DDDId = contactInputed.DDDId};
+
             _service.Create(contact);
             return Ok();
         }
 
         // PUT api/<ContactController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Contact contact)
+        public void Put(int id, [FromBody] Contactdto contactInputed)
         {
+            Contact contact = new Contact
+            {
+                Name = contactInputed.Name,
+                PhoneNumber = contactInputed.PhoneNumber,
+                Email = contactInputed.Email,
+                DDDId = contactInputed.DDDId
+            };
             _service.Update(id, contact);
         }
 
@@ -51,6 +65,13 @@ namespace TechChallengeFase1.Controllers
         public void Delete(int id)
         {
             _service.Delete(id);
+        }
+
+        // GET api/<ContactController>/FindByDDD/5
+        [HttpGet("FindByDDD/{number}")]
+        public IActionResult GetByDDDNumber(int number)
+        {
+            return Ok(_service.GetAll().Where(contact => contact.Ddd.Number == number));
         }
     }
 }

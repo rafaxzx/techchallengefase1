@@ -17,6 +17,7 @@ namespace TechChallengeFase1.Repository
         {
             var idDDD = contact.DDDId;
             contact.Ddd = _context.DDD.Find(idDDD);
+            contact.Ddd.Contacts = [];
             _context.Add(contact);
             _context.SaveChanges();
         }
@@ -29,7 +30,13 @@ namespace TechChallengeFase1.Repository
 
         public IEnumerable<Contact> ToListEntities()
         {
-            return _context.Contact.ToList();
+            var listOfContacts = _context.Contact.ToList();
+            foreach (var contact in listOfContacts)
+            {
+                contact.Ddd = _context.DDD.Find(contact.DDDId);
+                contact.Ddd.Contacts = [];
+            }
+            return listOfContacts;
         }
 
         public void UpdateEntity(int id, Contact contact)
@@ -46,7 +53,7 @@ namespace TechChallengeFase1.Repository
                 _context.SaveChanges();
             }
         }
-        public Contact GetById(int id)
+        public Contact GetByIdEntity(int id)
         {
             return _context.Contact.Find(id);
         }

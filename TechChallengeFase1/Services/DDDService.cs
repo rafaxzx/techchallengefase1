@@ -27,12 +27,19 @@ namespace TechChallengeFase1.Services
 
         public IEnumerable<DDD> GetAll()
         {
-           return _repository.ToListEntities();
+           var ddds = _repository.ToListEntities();
+            foreach (var ddd in ddds) 
+            {
+                ddd.Contacts = [];
+            }
+            return ddds;
         }
 
         public DDD GetById(int id)
         {
-            return _repository.GetById(id);
+            var ddd = _repository.GetByIdEntity(id);
+            ddd.Contacts = [];
+            return ddd;
         }
 
         public void Update(int id, DDD ddd)

@@ -62,7 +62,8 @@ namespace TechChallengeFase1.Repository
                 .HasColumnType("INTEGER")
                 .IsRequired(); // Não permite que a coluna tenha valores nulos
 
-                
+                // Cria um indice unico onde não se pode criar dois DDDs com mesmo número
+                etb.HasIndex(ddd => ddd.Number).IsUnique();
 
             });
 

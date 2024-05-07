@@ -28,7 +28,7 @@ namespace TechChallengeFase1.Services
 
         public Contact GetById(int id)
         {
-            return _repository.GetById(id);
+            return _repository.GetByIdEntity(id);
         }
 
         public void Update(int id, Contact contact)

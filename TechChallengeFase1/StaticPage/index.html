@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contatos por DDD</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+
+      form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      input[type="text"] {
+        padding: 10px;
+        margin-right: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        width: 100px;
+      }
+
+      button {
+        padding: 10px 20px;
+        border: none;
+        background-color: #007bff;
+        color: #fff;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      li {
+        margin-bottom: 10px;
+        padding: 10px;
+        background-color: #f9f9f9;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .contact-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .contact-info h2 {
+        margin: 0;
+        color: #555;
+      }
+
+      .contact-info p {
+        margin: 0;
+        color: #888;
+      }
+
+      .error-message {
+        color: #c00;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Contatos por DDD</h1>
+      <form id="search-form">
+        <input type="text" id="ddd-input" placeholder="Número DDD" />
+        <button type="submit">Buscar</button>
+      </form>
+      <ul id="contacts-list"></ul>
+      <p id="error-message" class="error-message" style="display: none">
+        Nenhum contato encontrado para esse DDD.
+      </p>
+    </div>
+
+    <script>
+      // Function to fetch contacts by DDD
+      async function fetchContactsByDDD(dddNumber) {
+        try {
+          const response = await fetch(
+            `http://localhost:5239/api/Contact/FindByDDD/${dddNumber}`
+          );
+          const contacts = await response.json();
+          return contacts;
+        } catch (error) {
+          console.error("Erro ao buscar contatos:", error);
+          throw new Error("Falhou ao buscar contatos");
+        }
+      }
+
+      // Function to render contacts
+      function renderContacts(contacts) {
+        const contactsList = document.getElementById("contacts-list");
+        contactsList.innerHTML = "";
+        if (contacts.length === 0) {
+          const errorMessage = document.getElementById("error-message");
+          errorMessage.style.display = "block";
+          return;
+        }
+        contacts.forEach((contact) => {
+          const li = document.createElement("li");
+          li.innerHTML = `
+                    <div class="contact-info">
+                        <h2>${contact.name}</h2>
+                        <p>${contact.phoneNumber}</p>
+                        <p>${contact.email}</p>
+                    </div>
+                `;
+          contactsList.appendChild(li);
+        });
+      }
+
+      // Function to handle errors
+      function handleError(error) {
+        const errorMessage = document.getElementById("error-message");
+        errorMessage.style.display = "block";
+        errorMessage.textContent = error.message;
+      }
+
+      // Function to handle form submission
+      async function handleFormSubmit(event) {
+        event.preventDefault();
+        const dddInput = document.getElementById("ddd-input");
+        const dddNumber = parseInt(dddInput.value);
+        if (!isNaN(dddNumber)) {
+          try {
+            const contacts = await fetchContactsByDDD(dddNumber);
+            renderContacts(contacts);
+          } catch (error) {
+            handleError(error);
+          }
+        } else {
+          const errorMessage = document.getElementById("error-message");
+          errorMessage.style.display = "block";
+          errorMessage.textContent =
+            "Por favor, insira um número de DDD válido.";
+        }
+      }
+
+      // Main function to initialize the page
+      document.addEventListener("DOMContentLoaded", () => {
+        const searchForm = document.getElementById("search-form");
+        searchForm.addEventListener("submit", handleFormSubmit);
+      });
+    </script>
+  </body>
+</html>
